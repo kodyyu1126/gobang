@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五子棋</title>
+    <style>
+        body { text-align: center; }
+        canvas { background-color: #f0d9b5; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>五子棋</h1>
+    <!-- 重置按钮 -->
+    <button id="resetButton">重置棋盘</button>
+    <canvas id="board" width="600" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById("board");
+        const ctx = canvas.getContext("2d");
+        const size = 15;
+        const cellSize = canvas.width / size;
+        let board = Array(size).fill(null).map(() => Array(size).fill(null));
+        let currentPlayer = "black";
+
+        function drawBoard() {
+            ctx.strokeStyle = "#000";
+            for (let i = 0; i < size; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * cellSize + cellSize / 2, cellSize / 2);
+                ctx.lineTo(i * cellSize + cellSize / 2, canvas.height - cellSize / 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(cellSize / 2, i * cellSize + cellSize / 2);
+                ctx.lineTo(canvas.width - cellSize / 2, i * cellSize + cellSize / 2);
+                ctx.stroke();
+            }
+        }
+
+        function drawPiece(x, y, color) {
+            ctx.beginPath();
+            ctx.arc(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2, cellSize / 3, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function checkWin(x, y, player) {
+            function count(dx, dy) {
+                let i = 1, count = 1;
+                while (board[y + i * dy]?.[x + i * dx] === player) { count++; i++; }
+                i = 1;
+                while (board[y - i * dy]?.[x - i * dx] === player) { count++; i++; }
+                return count;
+            }
+            return count(1, 0) >= 5 || count(0, 1) >= 5 || count(1, 1) >= 5 || count(1, -1) >= 5;
+        }
+
+        canvas.addEventListener("click", (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((event.clientX - rect.left) / cellSize);
+            const y = Math.floor((event.clientY - rect.top) / cellSize);
+            if (!board[y][x]) {
+                board[y][x] = currentPlayer;
+                drawPiece(x, y, currentPlayer);
+                if (checkWin(x, y, currentPlayer)) {
+                    alert(`${currentPlayer === "black" ? "黑棋" : "白棋"}获胜!`);
+                    board = Array(size).fill(null).map(() => Array(size).fill(null));
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    drawBoard();
+                    return;
+                }
+                currentPlayer = currentPlayer === "black" ? "white" : "black";
+            }
+        });
+        drawBoard();
+        // 重置棋盘逻辑
+        document.getElementById("resetButton").addEventListener("click", () => {
+            fetch("/reset")
+            .then(res => res.text())
+            .then(msg => {
+                alert(msg);
+            // 清空前端的棋盘显示
+            board = Array(size).fill(null).map(() => Array(size).fill(null));
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBoard();
+        });
+    });
+    </script>
+</body>
+</html>

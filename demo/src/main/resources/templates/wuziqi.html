@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>五子棋</title>
+    <link rel="stylesheet" th:href="@{/CSS/wuziqi.css}" />
+    <style>
+        .user-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .record-list {
+            margin-top: 20px;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .record-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .record-info {
+            flex: 1;
+            text-align: center;
+        }
+        .record-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .record-buttons button {
+            padding: 3px 8px;
+            font-size: 12px;
+        }
+        .turn-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .turn-indicator.black {
+            background-color: #000;
+            box-shadow: 0 0 2px 1px rgba(255,255,255,0.5);
+        }
+        .turn-indicator.white {
+            background-color: #fff;
+            box-shadow: 0 0 2px 1px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>五子棋游戏</h1>
+            
+            <div class="user-info">
+                <span sec:authentication="name"></span>
+                <span sec:authorize="hasRole('ADMIN')">(管理员)</span>
+                <a sec:authorize="hasRole('ADMIN')" href="/admin/dashboard" class="button admin-button">管理入口</a>
+                <form action="/logout" method="post" style="display: inline;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="button logout-button">退出</button>
+                </form>
+            </div>
+            
+            <div class="game-status">
+                <!-- 当前回合显示 -->
+                <div id="currentTurn">
+                    当前回合：<span class="turn-indicator" id="turnIndicator"></span>
+                </div>
+                
+                <!-- 游戏模式显示 -->
+                <div id="gameMode">当前模式：玩家对战</div>
+            </div>
+        </div>
+        
+        <div class="game-content">
+            <div class="board-container">
+                <table id="chessBoard">
+                    <tr th:each="row, y : ${board}">
+                        <td th:each="cell, x : ${row}"
+                            th:attr="data-x=${x.index}, data-y=${y.index}"
+                            class="cell">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="controls-panel">
+                <div class="panel-header">游戏控制</div>
+                <div class="panel-content">
+                    <div class="button-rows">
+                        <div class="button-group">
+                            <button id="resetButton" class="button">重置棋盘</button>
+                            <button id="toggleModeButton" class="button">切换对战模式</button>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button id="saveButton" class="button">保存棋局</button>
+                            <a href="/spectate" class="button spectate-button" id="spectateButton">进入观战席</a>
+                        </div>
+                    </div>
+                    
+                    <!-- 已保存棋局显示区域 -->
+                    <div id="gameRecords" class="panel-records">
+                        <div class="record-list-header">
+                            <h3>已保存棋局</h3>
+                        </div>
+                        <div id="recordsList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script th:src="@{/JS/wuziqi.js}"></script>
+</body>
+</html>

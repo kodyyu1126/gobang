@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>五子棋观战席</title>
+    <link rel="stylesheet" th:href="@{/CSS/spectate.css}" />
+</head>
+<body>
+    <div class="spectate-container">
+        <div class="spectate-header">
+            <h1>五子棋观战席</h1>
+            <div class="game-info">
+                <div id="currentTurn">
+                    当前回合：<span class="turn-indicator" id="turnIndicator"></span>
+                </div>
+                <div id="statusMessage">等待游戏数据...</div>
+            </div>
+        </div>
+        
+        <div class="spectate-content">
+            <div class="board-container">
+                <table id="chessBoard">
+                    <tr th:each="row, y : ${board}">
+                        <td th:each="cell, x : ${row}"
+                            th:attr="data-x=${x.index}, data-y=${y.index}"
+                            class="cell">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="info-panel">
+                <div class="panel-header">观战信息</div>
+                <div class="panel-content">
+                    <div class="info-item">
+                        <span class="info-label">黑棋：</span>
+                        <span class="info-value">玩家一</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">白棋：</span>
+                        <span class="info-value">玩家二</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">最后一步：</span>
+                        <span class="info-value" id="lastMove">暂无</span>
+                    </div>
+                    <div class="move-history">
+                        <div class="history-header">历史落子</div>
+                        <div class="history-list" id="moveHistory">
+                            <!-- 历史落子记录将在这里动态显示 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="spectate-footer">
+            <button id="refreshButton" class="button">刷新状态</button>
+        </div>
+    </div>
+    
+    <script th:src="@{/JS/spectate.js}"></script>
+</body>
+</html>
