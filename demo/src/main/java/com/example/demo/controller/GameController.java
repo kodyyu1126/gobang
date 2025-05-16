@@ -7,7 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.service.GameMessageService;
 import com.example.demo.service.GameStateService;
@@ -112,8 +116,8 @@ public class GameController {
             String currentPlayer = gameStateService.getCurrentPlayer(username);
             
             // 详细记录棋盘当前状态
-            log.debug("当前棋盘状态: {}", Arrays.deepToString(board));
-            log.debug("当前玩家: {}", currentPlayer);
+            log.info("当前棋盘状态: {}", Arrays.deepToString(board));
+            log.info("当前玩家: {}", currentPlayer);
             
             // 检验合法性：检查移动是否有效
             if (x < 0 || x >= 15 || y < 0 || y >= 15) {

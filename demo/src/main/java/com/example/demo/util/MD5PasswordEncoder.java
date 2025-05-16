@@ -7,7 +7,10 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * MD5密码编码器
+ * MD5密码编码器 - 用于Spring Security的密码加密
+ * 
+ * 注意: 此类是项目中处理密码加密的首选工具类，已在SecurityConfig中配置为默认的密码编码器。
+ * 在生产环境中，应考虑使用更安全的加密算法，如bcrypt或PBKDF2。
  */
 public class MD5PasswordEncoder implements PasswordEncoder {
 

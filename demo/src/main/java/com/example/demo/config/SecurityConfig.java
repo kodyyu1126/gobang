@@ -57,6 +57,11 @@ public class SecurityConfig {
         return http.build();
     }
     
+    /**
+     * 配置密码编码器
+     * 注意: 使用MD5PasswordEncoder作为项目的密码编码器。已移除冗余的PasswordUtil和MD5PasswordUtil工具类。
+     * 在生产环境中，推荐使用更安全的密码哈希算法，如BCrypt或PBKDF2。
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new MD5PasswordEncoder();

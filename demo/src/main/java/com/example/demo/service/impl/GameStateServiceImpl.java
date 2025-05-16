@@ -68,7 +68,7 @@ public class GameStateServiceImpl implements GameStateService {
     @Override
     @Cacheable(value = BOARD_CACHE, key = "#username")
     public String[][] getBoard(String username) {
-        log.debug("获取用户 {} 的棋盘状态(缓存未命中)", username);
+        log.info("获取用户 {} 的棋盘状态(缓存未命中)", username);
         // 如果缓存未命中，返回一个新的空棋盘
         return createEmptyBoard();
     }
@@ -79,7 +79,7 @@ public class GameStateServiceImpl implements GameStateService {
     @Override
     @CachePut(value = BOARD_CACHE, key = "#username")
     public String[][] setBoard(String username, String[][] board) {
-        log.debug("设置用户 {} 的棋盘状态", username);
+        log.info("设置用户 {} 的棋盘状态", username);
         // 深复制棋盘，避免引用问题
         return deepCopyBoard(board);
     }
@@ -90,7 +90,7 @@ public class GameStateServiceImpl implements GameStateService {
     @Override
     @Cacheable(value = PLAYER_CACHE, key = "#username")
     public String getCurrentPlayer(String username) {
-        log.debug("获取用户 {} 的当前玩家(缓存未命中)", username);
+        log.info("获取用户 {} 的当前玩家(缓存未命中)", username);
         // 如果缓存未命中，返回默认值
         return "black";
     }
@@ -101,7 +101,7 @@ public class GameStateServiceImpl implements GameStateService {
     @Override
     @CachePut(value = PLAYER_CACHE, key = "#username")
     public String setCurrentPlayer(String username, String currentPlayer) {
-        log.debug("设置用户 {} 的当前玩家为 {}", username, currentPlayer);
+        log.info("设置用户 {} 的当前玩家为 {}", username, currentPlayer);
         return currentPlayer;
     }
     
@@ -111,7 +111,7 @@ public class GameStateServiceImpl implements GameStateService {
     @Override
     @Cacheable(value = AI_MODE_CACHE, key = "#username")
     public boolean getAiMode(String username) {
-        log.debug("获取用户 {} 的AI模式状态(缓存未命中)", username);
+        log.info("获取用户 {} 的AI模式状态(缓存未命中)", username);
         // 如果缓存未命中，返回默认值
         return false;
     }
@@ -122,7 +122,7 @@ public class GameStateServiceImpl implements GameStateService {
     @Override
     @CachePut(value = AI_MODE_CACHE, key = "#username")
     public boolean setAiMode(String username, boolean aiMode) {
-        log.debug("设置用户 {} 的AI模式状态为 {}", username, aiMode);
+        log.info("设置用户 {} 的AI模式状态为 {}", username, aiMode);
         return aiMode;
     }
     

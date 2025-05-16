@@ -133,7 +133,6 @@
                         <td th:text="${#dates.format(new java.util.Date(record.saveTime), 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td th:text="${record.currentPlayer == 'black' ? '黑棋' : '白棋'}"></td>
                         <td class="actions">
-                            <a th:href="@{'/game/load/' + ${record.id}}" class="button">加载</a>
                             <button class="button button-danger" th:onclick="'deleteRecord(' + ${record.id} + ')'">删除</button>
                         </td>
                     </tr>

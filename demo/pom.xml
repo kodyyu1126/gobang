@@ -84,18 +84,6 @@
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
 
-		<!-- Flyway数据库迁移工具 -->
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
-		</dependency>
-		
-		<!-- MySQL Flyway支持 -->
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-mysql</artifactId>
-		</dependency>
-
 		<!-- Spring Boot 缓存支持 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
